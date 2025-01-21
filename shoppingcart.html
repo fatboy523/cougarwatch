@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Shopping Cart</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <style>
+        .cart-item {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            overflow: hidden;
+        }
+        .cart-item img {
+            float: left;
+            margin-right: 10px;
+            width: 100px;
+            height: auto;
+        }
+        .cart-item-details {
+            float: left;
+        }
+        .remove-button {
+            float: right;
+            margin-top: 10px;
+            cursor: pointer;
+            color: red;
+        }
+        .clear-cart-button {
+            margin-top: 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Shopping Cart</h2>
+
+<div id="cart"></div>
+
+<p><strong>Total Quantity:</strong> <span id="totalQuantity">0</span></p>
+<p><strong>Total Price:</strong> <span id="totalPrice">0</span></p>
+
+<!-- Clear Cart Button -->
+<button class="clear-cart-button" onclick="clearCart()">Clear Cart</button>
+
+<!-- Go Back Button -->
+<button class="back-button" onclick="window.location.href='index.html'">Back to Main Page</button>
+
+<script>
+// Get cart from localStorage or initialize an empty one
+let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+// Function to render cart items
+function renderCart() {
+    const cartContainer = document.getElementById('cart');
+    cartContainer.innerHTML = '';  // Clear cart content
+
+    let totalQuantity = 0;
+    let totalPrice = 0;
+
+    // Loop through cart and display each item
+    for (let id in cart) {
+        const item = cart[id];
+        const itemTotalPrice = (item.price * item.quantity).toFixed(2); // Round total item price to 2 decimals
+        totalPrice += parseFloat(itemTotalPrice);
+        totalQuantity += item.quantity;
+
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+            <img src="${item.product_image}" alt="${item.name}">
+            <div class="cart-item-details">
+                <p><strong>${item.name}</strong></p>
+                <p>Price: $${item.price.toFixed(2)}</p>  <!-- Round individual price -->
+                <label for="quantity-${id}">Quantity:</label>
+                <input type="number" id="quantity-${id}" value="${item.quantity}" min="1" onchange="updateQuantity(${id}, this.value)">
+                <p>Total: $${itemTotalPrice}</p>  <!-- Rounded total per item -->
+            </div>
+            <button class="remove-button" onclick="removeFromCart(${id})">Remove Item</button>
+        `;
+
+        cartContainer.appendChild(cartItem);
+    }
+
+    // Update total quantity and rounded total price
+    document.getElementById('totalQuantity').textContent = totalQuantity;
+    document.getElementById('totalPrice').textContent = `$${totalPrice.toFixed(2)}`;  // Rounded total price
+}
+
+// Function to update the quantity of an item
+function updateQuantity(id, newQuantity) {
+    if (cart[id]) {
+        cart[id].quantity = parseInt(newQuantity);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+}
+
+// Function to remove an item from the cart
+function removeFromCart(id) {
+    if (confirm('Are you sure you want to remove this item from your cart?')) {
+        delete cart[id];  // Remove the item from the cart object
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+}
+
+// Function to clear the entire cart
+function clearCart() {
+    if (confirm('Are you sure you want to clear your cart?')) {
+        localStorage.removeItem('cart');  // Clear localStorage cart
+        cart = {};  // Reset the cart object
+        renderCart();
+    }
+}
+
+// Initial render
+renderCart();
+</script>
+
+</body>
+</html>

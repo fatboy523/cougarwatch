@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>AntiVirus Product</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <script>
+        // Function to add a product to the cart
+        function addToCart(product_id, product_name, product_price, quantity, product_image) {
+            // Retrieve the existing cart from localStorage or initialize an empty cart
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+            // Check if the product already exists in the cart
+            if (cart[product_id]) {
+                // Increment the quantity
+                cart[product_id].quantity += quantity;
+            } else {
+                // Add the product to the cart
+                cart[product_id] = {
+                    name: product_name,
+                    price: product_price,
+                    quantity: quantity,
+                    product_image: product_image
+                };
+            }
+
+            // Store the updated cart back into localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(product_name + ' has been added to your cart!');
+        }
+
+        // Function to handle form submission
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            // Retrieve product information from the form
+            const product_id = document.getElementById('product_id').value;
+            const product_name = document.getElementById('product_name').value;
+            const product_price = parseFloat(document.getElementById('product_price').value.replace('$', ''));
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const product_image = document.getElementById('product_image').value;
+
+            // Add the product to the cart using JavaScript
+            addToCart(product_id, product_name, product_price, quantity, product_image);
+        }
+    </script>
+</head>
+<body>
+
+    <h2>Product Details</h2>
+    <form id="productForm" onsubmit="handleFormSubmit(event)">
+        <!-- Product ID -->
+        <label for="product_id">Product ID:</label>
+        <input type="text" id="product_id" name="product_id" value="3" readonly /><br/>
+
+        <!-- Product Name -->
+        <label for="product_name">Product Name:</label>
+        <input type="text" id="product_name" name="product_name" value="CougarWatch" readonly /><br/>
+
+        <!-- Product Price -->
+        <label for="product_price">Product Price:</label>
+        <input type="text" id="product_price" name="product_price" value="$99.99" readonly /><br/>
+
+        <!-- Product Quantity -->
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" /><br/>
+
+        <!-- Product Image URL -->
+        <label for="product_image">Product Image URL:</label>
+        <input type="text" id="product_image" name="product_image" value="logo.jpg" readonly /><br/>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Add to Cart" />
+    </form>
+
+</body>
+</html>
