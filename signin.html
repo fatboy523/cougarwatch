@@ -21,23 +21,21 @@
             color: #333;
         }
 
-        /* Header styles */
         .header-container {
             display: flex;
-            justify-content: center; /* Center the header content */
+            justify-content: center;
             align-items: center;
             padding: 10px 20px;
-            background-color: #ffffff; /* Changed to white */
+            background-color: #ffffff;
             width: 100%;
-            border-bottom: 1px solid #ccc; /* Added border for separation */
+            border-bottom: 1px solid #ccc;
         }
 
         h1 {
-            font-size: 24px; /* Font size for header title */
-            color: #333; /* Dark color for better visibility */
+            font-size: 24px;
+            color: #333;
         }
 
-        /* Main content area */
         .container {
             flex: 1;
             display: flex;
@@ -56,7 +54,7 @@
 
         h2 {
             margin-bottom: 20px;
-            color: #333; /* Dark color for better visibility */
+            color: #333;
         }
 
         p {
@@ -72,29 +70,36 @@
             font-size: 16px;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50; /* Green color for button */
+        .signin-button {
+            background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            margin-top: 10px;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Darker green on hover */
+        .signin-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
         }
 
-        /* Footer styles */
+        .signin-button:active {
+            transform: scale(0.98);
+        }
+
         footer {
-            background-color: #ffffff; /* Changed to white */
-            text-align: left; /* Aligns footer content to the left */
-            padding: 10px 20px; /* Added padding for spacing */
+            background-color: #ffffff;
+            text-align: left;
+            padding: 10px 20px;
             margin-top: auto;
             width: 100%;
-            border-top: 1px solid #ccc; /* Added border for separation */
+            border-top: 1px solid #ccc;
         }
 
         footer table {
@@ -106,31 +111,27 @@
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header-container">
         <h1>Cougar Watch</h1>
     </div>
 
-    <!-- Main content -->
     <div class="container">
         <div class="form-container">
             <h2>Enter Your Name to Sign In</h2>
-            <form method="POST" action="antivirusproduct.html">
-                <p>
-                    First Name <input type="text" name="first_name" required />
-                </p>
-                <p>
-                    Last Name <input type="text" name="last_name" required />
-                </p>
-                <p>
-                    <input type="button" value="Sign In" onclick="window.location.href='antivirusproduct.html';" />
-                </p>
-                
-            </form>
+            <p>
+                First Name <input type="text" id="first_name" required />
+            </p>
+            <p>
+                Last Name <input type="text" id="last_name" required />
+            </p>
+            <p>
+                <button class="signin-button" onclick="redirectToPage()">
+                    Sign In
+                </button>
+            </p>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <table>
             <tr>
@@ -147,6 +148,20 @@
             </tr>
         </table>
     </footer>
+
+    <script>
+        function redirectToPage() {
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+
+            if (firstName === "" || lastName === "") {
+                alert("Please enter both first and last name.");
+                return;
+            }
+
+            window.location.href = "antivirusproduct.html";
+        }
+    </script>
 
 </body>
 </html>
