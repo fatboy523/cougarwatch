@@ -41,7 +41,36 @@
             background-color: #0056b3;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Redirect user if already signed in
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                window.location.href = "dashboard.html"; // Change to your main page
+            }
+        });
+
+        function signIn() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Dummy authentication (Replace with real authentication logic)
+            if (username === "admin" && password === "password123") {
+                localStorage.setItem("isLoggedIn", "true");
+                window.location.href = "dashboard.html"; // Redirect to dashboard
+            } else {
+                alert("Invalid username or password.");
+            }
+        }
+    </script>
 </head>
 <body>
+    <div class="login-container">
+        <h2>Sign In to Cougar Watch</h2>
+        <form onsubmit="signIn(); return false;">
+            <input type="text" id="username" placeholder="Username" required />
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
 </body>
 </html>
